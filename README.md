@@ -1,8 +1,6 @@
-= maven-build-utils
+# DESCRIPTION
 
-== DESCRIPTION
-
-maven-build-utils is a collection of build-related utilities in the form 
+_maven-build-utils_ is a collection of build-related utilities in the form 
 of plugins and extensions for Maven 3.x. Currently, the provided features
 are:
 
@@ -10,7 +8,7 @@ are:
 
 That's it (for now).
 
-== USAGE
+# USAGE
 
 The only thing you need to do in order to start using maven-build-utils
 is to add the following build extension snippet into your project's POM:
@@ -69,7 +67,7 @@ The percentages are included for easier overview of where the hotspots are:
 * The listed percentage for a _goal_ represents that goal's contribution
   to the phase's execution.
 
-== LICENSE
+# LICENSE
 
 This code is licensed under the Apache License Version 2.0, January 2004.
 The full license text is available at [apache.org](http://www.apache.org/licenses/LICENSE-2.0.txt)

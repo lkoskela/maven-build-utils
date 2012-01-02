@@ -25,6 +25,16 @@
 		<connection>scm:git:git://github.com/lkoskela/maven-build-utils.git</connection>
 		<developerConnection>scm:git:git@github.com:lkoskela/maven-build-utils.git</developerConnection>
 	</scm>
+	<distributionManagement>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 	<issueManagement>
 		<system>github</system>
 		<url>http://github.com/lkoskela/maven-build-utils/issues</url>

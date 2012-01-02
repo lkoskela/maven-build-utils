@@ -27,8 +27,8 @@ is to add the following build extension snippet into your project's POM:
         ...
     </project>
 
-That's all. With this in your POM, running any kind of goals and phases,
-your build output should include a summary that looks a bit like this:
+With this in your POM, running any kind of goals and phases, your build output
+should include a summary that looks a bit like this:
 
     [INFO] ----- BUILD STEP DURATIONS -----------------
     [INFO] [generate-sources                                      1,0s   2%]
@@ -66,6 +66,20 @@ The percentages are included for easier overview of where the hotspots are:
   to the whole build's execution.
 * The listed percentage for a _goal_ represents that goal's contribution
   to the phase's execution.
+
+# OOPS!
+
+Oh yeah, in order for that stuff in your POM to actually work, Maven needs
+to find the artifact somewhere. At this time the extension isn't published
+to the public Maven repositories so you'll have to install it locally by:
+
+1. `git clone git@github.com:lkoskela/maven-build-utils.git`
+2. `cd maven-build-utils ; mvn install`
+
+Once you have installed maven-build-utils to your local repository (`$HOME/.m2`)
+that thing in your POM should start working.
+
+Good luck!
 
 # LICENSE
 

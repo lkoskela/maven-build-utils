@@ -39,7 +39,7 @@ class BuildEventLogReport {
 		long phaseDuration = totalDurationOfPhase(phase);
 		long percentageOfPhase = (long) buildStep.duration().percentageOf(
 				phaseDuration);
-		if (!phase.equals(currentPhase)) {
+		if (phase != null && !phase.equals(currentPhase)) {
 			reportPhaseStatistics(phase, totalDuration, phaseDuration);
 		}
 		reportGoalStatistics(buildStep, percentageOfPhase);
@@ -63,7 +63,7 @@ class BuildEventLogReport {
 	public long totalDurationOfPhase(String phase) {
 		long total = 0;
 		for (BuildStep e : steps) {
-			if (e.phase.equals(phase)) {
+			if (phase != null && phase.equals(e.phase)) {
 				total += e.duration().inMillis();
 			}
 		}

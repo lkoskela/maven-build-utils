@@ -9,6 +9,9 @@
 	<description>Build utility plugins and extensions for Maven 3</description>
 	<inceptionYear>2012</inceptionYear>
 	<url>https://github.com/lkoskela/maven-build-utils</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>

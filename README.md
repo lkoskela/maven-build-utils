@@ -18,7 +18,7 @@ is to add the following build extension snippet into your project's POM:
         <build>
             <extensions>
                 <extension>
-                    <groupId>com.lassekoskela.maven</groupId>
+                    <groupId>com.github.lkoskela</groupId>
                     <artifactId>maven-build-utils</artifactId>
                     <version>1.0-SNAPSHOT</version>
                 </extension>

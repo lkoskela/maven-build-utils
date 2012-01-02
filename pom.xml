@@ -4,6 +4,7 @@
 	<groupId>com.lassekoskela.maven</groupId>
 	<artifactId>maven-build-utils</artifactId>
 	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>maven-build-utils</name>
 	<description>Build utility plugins and extensions for Maven 3</description>
 	<url>https://github.com/lkoskela/maven-build-utils</url>

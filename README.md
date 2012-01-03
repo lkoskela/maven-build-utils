@@ -20,7 +20,7 @@ is to add the following build extension snippet into your project's POM:
                 <extension>
                     <groupId>com.github.lkoskela</groupId>
                     <artifactId>maven-build-utils</artifactId>
-                    <version>1.0-SNAPSHOT</version>
+                    <version>1.1</version>
                 </extension>
             </extensions>
         </build>
@@ -66,18 +66,6 @@ The percentages are included for easier overview of where the hotspots are:
   to the whole build's execution.
 * The listed percentage for a _goal_ represents that goal's contribution
   to the phase's execution.
-
-# OOPS!
-
-Oh yeah, in order for that stuff in your POM to actually work, Maven needs
-to find the artifact somewhere. At this time the extension isn't published
-to the public Maven repositories so you'll have to install it locally by:
-
-1. `git clone git@github.com:lkoskela/maven-build-utils.git`
-2. `cd maven-build-utils ; mvn install`
-
-Once you have installed maven-build-utils to your local repository (`$HOME/.m2`)
-that thing in your POM should start working.
 
 Good luck!
 

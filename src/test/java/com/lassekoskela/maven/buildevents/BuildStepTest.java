@@ -11,9 +11,12 @@ import com.lassekoskela.time.Clock;
 import com.lassekoskela.time.Duration;
 
 public class BuildStepTest {
+	private BuildStep step;
+
 	@Before
 	public void setUp() throws Exception {
 		Clock.freeze();
+		step = new BuildStep("project", "phase", "group", "artifact", "goal");
 	}
 
 	@After
@@ -23,7 +26,6 @@ public class BuildStepTest {
 
 	@Test
 	public void startingAndEndingAStepRecordsDuration() {
-		BuildStep step = new BuildStep("phase", "group", "artifact", "goal");
 		step.start();
 		Clock.advance(123);
 		step.end();

@@ -12,6 +12,11 @@ public class BuildEventListener extends AbstractExecutionListener {
 	}
 
 	@Override
+	public void sessionEnded(ExecutionEvent event) {
+		log.report();
+	}
+
+	@Override
 	public void mojoSkipped(ExecutionEvent event) {
 		log(event);
 	}
@@ -20,7 +25,8 @@ public class BuildEventListener extends AbstractExecutionListener {
 	public void mojoStarted(ExecutionEvent event) {
 		MojoExecution mojo = event.getMojoExecution();
 		String phase = mojo.getLifecyclePhase();
-		log.start(phase, mojo.getGroupId(), mojo.getArtifactId(),
+		String project = event.getProject().getArtifactId();
+		log.start(project, phase, mojo.getGroupId(), mojo.getArtifactId(),
 				mojo.getGoal());
 	}
 
@@ -34,29 +40,19 @@ public class BuildEventListener extends AbstractExecutionListener {
 		mojoEnded(event);
 	}
 
-	@Override
-	public void projectSucceeded(ExecutionEvent event) {
-		projectEnded(event);
-	}
-
-	@Override
-	public void projectFailed(ExecutionEvent event) {
-		projectEnded(event);
-	}
-
 	private void mojoEnded(ExecutionEvent event) {
 		MojoExecution mojo = event.getMojoExecution();
 		String phase = mojo.getLifecyclePhase();
-		log.end(phase, mojo.getGroupId(), mojo.getArtifactId(), mojo.getGoal());
-	}
-
-	private void projectEnded(ExecutionEvent event) {
-		log.report();
+		String project = event.getProject().getArtifactId();
+		log.end(project, phase, mojo.getGroupId(), mojo.getArtifactId(),
+				mojo.getGoal());
 	}
 
 	private void log(ExecutionEvent event) {
 		MojoExecution mojo = event.getMojoExecution();
 		String phase = mojo.getLifecyclePhase();
-		log.end(phase, mojo.getGroupId(), mojo.getArtifactId(), mojo.getGoal());
+		String project = event.getProject().getArtifactId();
+		log.end(project, phase, mojo.getGroupId(), mojo.getArtifactId(),
+				mojo.getGoal());
 	}
 }

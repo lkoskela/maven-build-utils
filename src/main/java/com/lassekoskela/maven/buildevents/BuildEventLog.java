@@ -15,13 +15,13 @@ public class BuildEventLog {
 		this.steps = new ArrayList<BuildStep>();
 	}
 
-	public void start(String phase, String groupId, String artifactId,
+	public void start(String project, String phase, String groupId, String artifactId,
 			String goal) {
-		latestStep = new BuildStep(phase, groupId, artifactId, goal);
+		latestStep = new BuildStep(project, phase, groupId, artifactId, goal);
 		latestStep.start();
 	}
 
-	public void end(String phase, String groupId, String artifactId, String goal) {
+	public void end(String project, String phase, String groupId, String artifactId, String goal) {
 		latestStep.end();
 		steps.add(latestStep);
 	}
@@ -33,9 +33,17 @@ public class BuildEventLog {
 	public long totalDuration() {
 		return createReport().totalDuration();
 	}
+	
+	public long totalDurationOfProject(String project) {
+		return createReport().totalDurationOfProject(project);
+	}
 
 	public long totalDurationOfPhase(String phase) {
 		return createReport().totalDurationOfPhase(phase);
+	}
+	
+	public long totalDurationOfPhase(String project, String phase) {
+		return createReport().totalDurationOfPhase(project, phase);
 	}
 
 	protected BuildEventLogReport createReport(Logger logger,

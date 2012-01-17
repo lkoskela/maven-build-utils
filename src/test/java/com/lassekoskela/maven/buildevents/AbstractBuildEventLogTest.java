@@ -1,11 +1,10 @@
 package com.lassekoskela.maven.buildevents;
 
 import static java.util.Collections.unmodifiableList;
-import static org.mockito.Mockito.mock;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.plexus.logging.Logger;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -14,8 +13,7 @@ import org.junit.Before;
 import com.lassekoskela.time.Clock;
 
 public abstract class AbstractBuildEventLogTest {
-	private Logger logger;
-	private List<BuildStep> reportSteps;
+	private List<BuildStep> reportSteps = new ArrayList<BuildStep>();
 	protected BuildEventLog log;
 	protected boolean reportWasCreated;
 	protected EventSimulator simulator;
@@ -31,15 +29,14 @@ public abstract class AbstractBuildEventLogTest {
 	@Before
 	public final void _createFixtureObjects() throws Exception {
 		Clock.freeze();
-		logger = new FakeLogger();
 		reportWasCreated = false;
-		log = new BuildEventLog(logger) {
+		log = new BuildEventLog() {
 			@Override
-			protected BuildEventLogReport createReport(Logger logger,
+			protected BuildEventLogReport createReport(
 					final List<BuildStep> steps) {
-				return new BuildEventLogReport(logger, steps) {
+				return new BuildEventLogReport(steps) {
 					@Override
-					public void report() {
+					public void report(java.io.PrintWriter writer) {
 						recordReportedSteps(steps);
 						reportWasCreated = true;
 					}

@@ -1,19 +1,44 @@
 package com.lassekoskela.maven.buildevents;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import org.apache.maven.execution.AbstractExecutionListener;
 import org.apache.maven.execution.ExecutionEvent;
 import org.apache.maven.plugin.MojoExecution;
 
 public class BuildEventListener extends AbstractExecutionListener {
 	private final BuildEventLog log;
+	private File buildDir;
 
 	public BuildEventListener(BuildEventLog buildEventLog) {
 		this.log = buildEventLog;
 	}
 
 	@Override
+	public void sessionStarted(ExecutionEvent event) {
+		super.sessionStarted(event);
+		buildDir = new File(event.getProject().getBuild().getDirectory());
+	}
+
+	@Override
 	public void sessionEnded(ExecutionEvent event) {
-		log.report();
+		if (!buildDir.exists()) {
+			buildDir.mkdirs();
+		}
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new File(buildDir, "durations.log"));
+			log.report(writer);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
+		super.sessionEnded(event);
 	}
 
 	@Override

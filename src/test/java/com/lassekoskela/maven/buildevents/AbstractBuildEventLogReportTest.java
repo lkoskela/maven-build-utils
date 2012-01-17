@@ -45,13 +45,11 @@ public abstract class AbstractBuildEventLogReportTest {
 		};
 	}
 
-	protected FakeLogger logger;
 	protected BuildEventLogReport report;
 
 	@Before
 	public final void _createFixtureObjects() throws Exception {
 		Clock.freeze();
-		logger = new FakeLogger();
 	}
 
 	@After

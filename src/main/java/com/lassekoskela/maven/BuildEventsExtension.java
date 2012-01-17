@@ -5,8 +5,6 @@ import org.apache.maven.MavenExecutionException;
 import org.apache.maven.execution.ExecutionListener;
 import org.apache.maven.execution.MavenSession;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.logging.Logger;
 
 import com.lassekoskela.maven.buildevents.BuildEventListener;
 import com.lassekoskela.maven.buildevents.BuildEventLog;
@@ -14,22 +12,14 @@ import com.lassekoskela.maven.buildevents.ExecutionListenerChain;
 
 @Component(role = AbstractMavenLifecycleParticipant.class, hint = "buildevents")
 public class BuildEventsExtension extends AbstractMavenLifecycleParticipant {
-
-	@Requirement
-	private Logger logger;
-
 	@Override
 	public void afterProjectsRead(MavenSession session)
 			throws MavenExecutionException {
 		ExecutionListener original = session.getRequest()
 				.getExecutionListener();
-		BuildEventLog log = new BuildEventLog(logger);
+		BuildEventLog log = new BuildEventLog();
 		ExecutionListener injected = new BuildEventListener(log);
 		ExecutionListener chain = new ExecutionListenerChain(original, injected);
 		session.getRequest().setExecutionListener(chain);
-	}
-
-	void log(CharSequence message) {
-		logger.info(message.toString());
 	}
 }

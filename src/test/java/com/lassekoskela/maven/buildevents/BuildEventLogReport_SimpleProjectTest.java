@@ -3,13 +3,13 @@ package com.lassekoskela.maven.buildevents;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.lassekoskela.maven.logging.ChainedLogger;
 
 public class BuildEventLogReport_SimpleProjectTest extends
 		AbstractBuildEventLogReportTest {
@@ -22,7 +22,7 @@ public class BuildEventLogReport_SimpleProjectTest extends
 		steps.add(step("phase-C", "goal-C1", 20));
 		steps.add(step("phase-C", "goal-C2", 300));
 		steps.add(step("phase-C", "goal-C3", 10));
-		report = new BuildEventLogReport(new ChainedLogger(logger), steps);
+		report = new BuildEventLogReport(steps);
 	}
 
 	@Test
@@ -44,9 +44,10 @@ public class BuildEventLogReport_SimpleProjectTest extends
 
 	@Test
 	public void reportsDurationsByGoal() throws Exception {
-		report.report();
+		StringWriter output = new StringWriter();
+		report.report(new PrintWriter(output));
 		assertThat(
-				logger.output(),
+				output.toString(),
 				containsInOrder("BUILD STEP DURATIONS",
 						goalStatsLine("goal-A1", 0.1, 100),
 						goalStatsLine("goal-B1", 2.0, 86),
@@ -58,9 +59,10 @@ public class BuildEventLogReport_SimpleProjectTest extends
 
 	@Test
 	public void reportsDurationsByPhase() throws Exception {
-		report.report();
+		StringWriter output = new StringWriter();
+		report.report(new PrintWriter(output));
 		assertThat(
-				logger.output(),
+				output.toString(),
 				containsInOrder("BUILD STEP DURATIONS",
 						phaseStatsLine("phase-A", 0.1, 3),
 						phaseStatsLine("phase-B", 2.3, 84),

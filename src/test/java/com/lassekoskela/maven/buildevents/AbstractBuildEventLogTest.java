@@ -1,11 +1,9 @@
 package com.lassekoskela.maven.buildevents;
 
 import static java.util.Collections.unmodifiableList;
-import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
-import org.codehaus.plexus.logging.Logger;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.After;

@@ -3,6 +3,8 @@ package com.lassekoskela.maven.buildevents;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lassekoskela.maven.logging.Log;
+
 public class BuildEventLog {
 	private final Log logger;
 	private final List<BuildStep> steps;

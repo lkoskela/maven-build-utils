@@ -12,7 +12,8 @@ import org.codehaus.plexus.logging.Logger;
 import com.lassekoskela.maven.buildevents.BuildEventListener;
 import com.lassekoskela.maven.buildevents.BuildEventLog;
 import com.lassekoskela.maven.buildevents.ExecutionListenerChain;
-import com.lassekoskela.maven.buildevents.Log;
+import com.lassekoskela.maven.logging.ConsoleLog;
+import com.lassekoskela.maven.logging.Log;
 
 @Component(role = AbstractMavenLifecycleParticipant.class, hint = "buildevents")
 public class BuildEventsExtension extends AbstractMavenLifecycleParticipant {

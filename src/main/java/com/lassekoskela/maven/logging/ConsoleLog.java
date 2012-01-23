@@ -1,8 +1,7 @@
-package com.lassekoskela.maven;
+package com.lassekoskela.maven.logging;
 
 import org.codehaus.plexus.logging.Logger;
 
-import com.lassekoskela.maven.buildevents.Log;
 
 public class ConsoleLog implements Log {
 

@@ -9,6 +9,7 @@ import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 
+import com.lassekoskela.maven.logging.Log;
 import com.lassekoskela.time.Clock;
 
 public abstract class AbstractBuildEventLogTest {

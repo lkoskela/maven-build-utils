@@ -1,5 +1,7 @@
 package com.lassekoskela.maven.buildevents;
 
+import com.lassekoskela.maven.logging.Log;
+
 public final class FakeLogger implements Log {
 	private StringBuilder log;
 

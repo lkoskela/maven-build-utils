@@ -1,4 +1,4 @@
-package com.lassekoskela.maven.buildevents;
+package com.lassekoskela.maven.logging;
 
 public interface Log {
 

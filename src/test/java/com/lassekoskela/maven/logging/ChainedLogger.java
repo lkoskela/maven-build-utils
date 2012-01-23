@@ -1,6 +1,5 @@
 package com.lassekoskela.maven.logging;
 
-import com.lassekoskela.maven.buildevents.Log;
 
 public class ChainedLogger implements Log {
 

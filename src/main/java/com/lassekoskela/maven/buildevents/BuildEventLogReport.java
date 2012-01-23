@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.hamcrest.Matcher;
 
+import com.lassekoskela.maven.logging.Log;
 import com.lassekoskela.time.Duration;
 
 class BuildEventLogReport {

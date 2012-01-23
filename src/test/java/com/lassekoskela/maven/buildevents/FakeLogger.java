@@ -9,6 +9,14 @@ public final class FakeLogger implements Log {
 		log = new StringBuilder();
 	}
 
+	@Override
+	public String destination() {
+		return "fake";
+	}
+
+	/**
+	 * Returns the complete output written to this log so far.
+	 */
 	public String output() {
 		return log.toString();
 	}

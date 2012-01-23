@@ -10,6 +10,11 @@ public class ConsoleLog implements Log {
 	public ConsoleLog(Logger logger) {
 		this.logger = logger;
 	}
+	
+	@Override
+	public String destination() {
+		return "console";
+	}
 
 	@Override
 	public void info(String message) {

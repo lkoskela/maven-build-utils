@@ -22,7 +22,7 @@ is to add the following build extension snippet into your project's POM:
                 <extension>
                     <groupId>com.github.lkoskela</groupId>
                     <artifactId>maven-build-utils</artifactId>
-                    <version>1.2</version>
+                    <version>1.3</version>
                 </extension>
             </extensions>
         </build>
@@ -30,35 +30,44 @@ is to add the following build extension snippet into your project's POM:
     </project>
 
 With this in your POM, running any kind of goals and phases, your build output
-should include a summary that looks a bit like this:
+should include a summary that looks a bit like this (for a multi-module project):
 
-    [INFO] ----- BUILD STEP DURATIONS -----------------
-    [INFO] *project-1                                             5,5s  28%
-    [INFO]   clean                                                0,0s   2%
-    [INFO]     maven-clean-plugin:clean                           0,0s 100%
-    [INFO]   process-resources                                    0,7s  12%
-    [INFO]     maven-resources-plugin:resources                   0,7s 100%
-    [INFO]   compile                                              1,0s  18%
-    [INFO]     maven-compiler-plugin:compile                      1,0s 100%
-    [INFO]   process-test-resources                               0,0s   0%
-    [INFO]     maven-resources-plugin:testResources               0,0s 100%
-    [INFO]   test-compile                                         0,5s   8%
-    [INFO]     maven-compiler-plugin:testCompile                  0,5s 100%
-    [INFO]   test                                                 3,3s  60%
-    [INFO]     maven-surefire-plugin:test                         3,3s 100%
-    [INFO] *project-2                                             0,9s   4%
-    [INFO]   clean                                                0,0s   2%
-    [INFO]     maven-clean-plugin:clean                           0,0s 100%
-    [INFO]   process-resources                                    0,0s   0%
-    [INFO]     maven-resources-plugin:resources                   0,0s 100%
-    [INFO]   compile                                              0,1s  15%
-    [INFO]     maven-compiler-plugin:compile                      0,1s 100%
-    [INFO]   process-test-resources                               0,0s   0%
-    [INFO]     maven-resources-plugin:testResources               0,0s 100%
-    [INFO]   test-compile                                         0,1s  15%
-    [INFO]     maven-compiler-plugin:testCompile                  0,1s 100%
-    [INFO]   test                                                 0,6s  66%
-    [INFO]     maven-surefire-plugin:test                         0,6s 100%
+    [INFO] ------------------------- BUILD STEP DURATIONS -------------------------
+    [INFO] PROJECT                                                    DURATION     
+    [INFO] | PHASE                                                       PERCENTAGE
+    [INFO] | | GOAL                                                          |    |
+    [INFO] | | |                                                             |    |
+    [INFO] 
+    [INFO] *parent                                                        0,9s   5%
+    [INFO]   generate-resources                                           0,9s 100%
+    [INFO]     maven-remote-resources-plugin:process                      0,9s 100%
+    [INFO] 
+    [INFO] *module1                                                       6,0s  37%
+    [INFO]   generate-sources                                             1,7s  28%
+    [INFO]     modello-maven-plugin:java                                  1,2s  71%
+    [INFO]     modello-maven-plugin:xpp3-reader                           0,2s  12%
+    [INFO]     modello-maven-plugin:xpp3-extended-reader                  0,1s   7%
+    [INFO]     modello-maven-plugin:xpp3-writer                           0,2s   8%
+    [INFO]   generate-resources                                           0,1s   0%
+    [INFO]     maven-remote-resources-plugin:process                      0,1s 100%
+    [INFO]   process-resources                                            0,4s   6%
+    [INFO]     maven-resources-plugin:resources                           0,4s 100%
+    [INFO]   compile                                                      3,8s  63%
+    [INFO]     maven-compiler-plugin:compile                              3,8s 100%
+    [INFO] 
+    [INFO] *module2                                                       0,9s   5%
+    [INFO]   generate-sources                                             0,1s  16%
+    [INFO]     modello-maven-plugin:java                                  0,1s  55%
+    [INFO]     modello-maven-plugin:xpp3-reader                           0,0s  25%
+    [INFO]     modello-maven-plugin:xpp3-writer                           0,0s  19%
+    [INFO]   generate-resources                                           0,0s   5%
+    [INFO]     maven-remote-resources-plugin:process                      0,0s 100%
+    [INFO]   process-resources                                            0,0s   1%
+    [INFO]     maven-resources-plugin:resources                           0,0s 100%
+    [INFO]   compile                                                      0,7s  77%
+    [INFO]     maven-compiler-plugin:compile                              0,7s 100%
+    [INFO]
+    [INFO] ...
 
 As you can see, the summary lists the total duration of each build lifecycle
 phase that was executed (generate-sources, generate-resources, etc.) as well
@@ -72,6 +81,19 @@ The percentages are included for easier overview of where the hotspots are:
   to the project's execution.
 * The listed percentage for a _goal_ represents that goal's contribution
   to the phase's execution.
+
+# CONFIGURATION
+
+The report is written to the console by default. If you'd prefer to direct
+it to a file, you can do that with a system property like so:
+
+    mvn -Dduration.output=file ...
+
+This will direct the output to "target/durations.log" under the execution
+directory. If you would prefer a different destination for the log file, 
+you can override it with another system property:
+
+    mvn -Dduration.output=file -Dduration.output.file=/tmp/perf.log ...
 
 Good luck!
 

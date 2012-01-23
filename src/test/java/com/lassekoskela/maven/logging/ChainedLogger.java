@@ -1,6 +1,5 @@
 package com.lassekoskela.maven.logging;
 
-
 public class ChainedLogger implements Log {
 
 	private final Log[] logs;
@@ -14,5 +13,17 @@ public class ChainedLogger implements Log {
 		for (Log log : logs) {
 			log.info(msg);
 		}
+	}
+
+	@Override
+	public String destination() {
+		StringBuilder s = new StringBuilder();
+		for (Log log : logs) {
+			if (s.length() > 0) {
+				s.append(", ");
+			}
+			s.append(log.destination());
+		}
+		return "chain(" + s.toString() + ")";
 	}
 }

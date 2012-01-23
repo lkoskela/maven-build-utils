@@ -26,17 +26,21 @@ class BuildEventLogReport {
 	}
 
 	public void report() {
+		printHeader();
+		reportBuildSteps(steps);
+		printFooter();
+	}
+
+	private void reportBuildSteps(List<BuildStep> steps) {
 		String currentProject = "";
 		String currentPhase = "";
 		long totalDuration = totalDuration();
-		log.info("------------------------- BUILD STEP DURATIONS -------------------------");
 		for (BuildStep buildStep : steps) {
 			reportBuildStep(currentProject, currentPhase, buildStep,
 					totalDuration);
 			currentPhase = buildStep.phase;
 			currentProject = buildStep.project;
 		}
-		log.info("------------------------------------------------------------------------");
 	}
 
 	private void reportBuildStep(String currentProject, String currentPhase,
@@ -48,6 +52,7 @@ class BuildEventLogReport {
 		long percentageOfPhase = (long) buildStep.duration().percentageOf(
 				phaseDuration);
 		if (project != null && !project.equals(currentProject)) {
+			log.info("");
 			reportProjectStatistics(project, totalDuration, projectDuration);
 		}
 		if (phase != null && !phase.equals(currentPhase)) {
@@ -126,5 +131,17 @@ class BuildEventLogReport {
 
 	public void add(List<BuildStep> steps) {
 		this.steps.addAll(steps);
+	}
+
+	private void printFooter() {
+		log.info("------------------------------------------------------------------------");
+	}
+
+	private void printHeader() {
+		log.info("------------------------- BUILD STEP DURATIONS -------------------------");
+		log.info("PROJECT                                                    DURATION     ");
+		log.info("| PHASE                                                       PERCENTAGE");
+		log.info("| | GOAL                                                          |    |");
+		log.info("| | |                                                             |    |");
 	}
 }

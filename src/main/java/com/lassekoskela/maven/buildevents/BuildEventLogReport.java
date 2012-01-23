@@ -7,22 +7,20 @@ import static org.hamcrest.Matchers.allOf;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.plexus.logging.Logger;
 import org.hamcrest.Matcher;
 
 import com.lassekoskela.time.Duration;
 
 class BuildEventLogReport {
-
-	private final Logger logger;
+	private final Log log;
 	private final List<BuildStep> steps;
 
-	public BuildEventLogReport(Logger logger) {
-		this(logger, new ArrayList<BuildStep>());
+	public BuildEventLogReport(Log log) {
+		this(log, new ArrayList<BuildStep>());
 	}
 
-	public BuildEventLogReport(Logger logger, List<BuildStep> steps) {
-		this.logger = logger;
+	public BuildEventLogReport(Log log, List<BuildStep> steps) {
+		this.log = log;
 		this.steps = steps;
 	}
 
@@ -30,13 +28,14 @@ class BuildEventLogReport {
 		String currentProject = "";
 		String currentPhase = "";
 		long totalDuration = totalDuration();
-		logger.info("----- BUILD STEP DURATIONS -----------------");
+		log.info("------------------------- BUILD STEP DURATIONS -------------------------");
 		for (BuildStep buildStep : steps) {
 			reportBuildStep(currentProject, currentPhase, buildStep,
 					totalDuration);
 			currentPhase = buildStep.phase;
 			currentProject = buildStep.project;
 		}
+		log.info("------------------------------------------------------------------------");
 	}
 
 	private void reportBuildStep(String currentProject, String currentPhase,
@@ -59,7 +58,7 @@ class BuildEventLogReport {
 	private void reportGoalStatistics(BuildStep buildStep, long percentage) {
 		String goal = buildStep.artifactId + ":" + buildStep.goal;
 		double seconds = buildStep.duration().inSeconds();
-		logger.info(format("    %-46s %7.1fs %3s%%", goal, seconds, percentage));
+		log.info(format("    %-54s %7.1fs %3s%%", goal, seconds, percentage));
 	}
 
 	private void reportPhaseStatistics(String phase, long totalDuration,
@@ -67,8 +66,7 @@ class BuildEventLogReport {
 		Duration phaseDuration = new Duration(totalDurationOfPhase);
 		long percentage = (long) phaseDuration.percentageOf(totalDuration);
 		double seconds = phaseDuration.inSeconds();
-		logger.info(format("%-50s %7.1fs %3s%%", "  " + phase, seconds,
-				percentage));
+		log.info(format("%-58s %7.1fs %3s%%", "  " + phase, seconds, percentage));
 	}
 
 	private void reportProjectStatistics(String project, long totalDuration,
@@ -76,7 +74,7 @@ class BuildEventLogReport {
 		Duration projectDuration = new Duration(totalDurationOfProject);
 		long percentage = (long) projectDuration.percentageOf(totalDuration);
 		double seconds = projectDuration.inSeconds();
-		logger.info(format("%-50s %7.1fs %3s%%", "*" + project, seconds,
+		log.info(format("%-58s %7.1fs %3s%%", "*" + project, seconds,
 				percentage));
 	}
 

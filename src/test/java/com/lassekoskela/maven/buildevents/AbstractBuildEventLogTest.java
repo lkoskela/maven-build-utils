@@ -14,7 +14,7 @@ import org.junit.Before;
 import com.lassekoskela.time.Clock;
 
 public abstract class AbstractBuildEventLogTest {
-	private Logger logger;
+	private Log logger;
 	private List<BuildStep> reportSteps;
 	protected BuildEventLog log;
 	protected boolean reportWasCreated;
@@ -35,7 +35,7 @@ public abstract class AbstractBuildEventLogTest {
 		reportWasCreated = false;
 		log = new BuildEventLog(logger) {
 			@Override
-			protected BuildEventLogReport createReport(Logger logger,
+			protected BuildEventLogReport createReport(Log logger,
 					final List<BuildStep> steps) {
 				return new BuildEventLogReport(logger, steps) {
 					@Override

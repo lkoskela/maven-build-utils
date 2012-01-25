@@ -19,12 +19,19 @@ public class FieldMatcher<T> extends BaseMatcher<T> {
 		try {
 			Field fieldObj = candidate.getClass().getField(field);
 			Object actualValue = fieldObj.get(candidate);
-			return value.equals(actualValue);
+			return areEqual(value, actualValue);
 		} catch (NoSuchFieldException e) {
 			return false;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private boolean areEqual(Object a, Object b) {
+		if (a == null) {
+			return b == null;
+		}
+		return a.equals(b);
 	}
 
 	@Override

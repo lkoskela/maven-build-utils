@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.lkoskela</groupId>
 	<artifactId>maven-build-utils</artifactId>
-	<version>1.4</version>
+	<version>1.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>maven-build-utils</name>
 	<description>Build utility plugins and extensions for Maven 3</description>

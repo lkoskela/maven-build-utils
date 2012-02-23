@@ -12,8 +12,8 @@ That's it (for now).
 
 # USAGE
 
-The only thing you need to do in order to start using maven-build-utils
-is to add the following build extension snippet into your project's POM:
+In order to start using maven-build-utils there are three things you need
+to add to your project's POM:
 
     <project>
         ...
@@ -22,15 +22,40 @@ is to add the following build extension snippet into your project's POM:
                 <extension>
                     <groupId>com.github.lkoskela</groupId>
                     <artifactId>maven-build-utils</artifactId>
-                    <version>1.3</version>
+                    <version>1.4</version>
                 </extension>
             </extensions>
         </build>
         ...
+        <properties>
+            <maven-build-utils.activationProfiles>perfstats</maven-build-utils.activationProfiles>
+        </properties>
+        ...
+        <profiles>
+            <profile>
+                <id>perfstats</id>
+            </profile>
+        </profiles>
+        ...
     </project>
 
-With this in your POM, running any kind of goals and phases, your build output
-should include a summary that looks a bit like this (for a multi-module project):
+The first bit to add is the build extension itself. The second bit to add is
+the name(s) of the _activation profiles_ that maven-build-utils should run with.
+If you'll want to bind maven-build-utils to more than one profile, separate them
+with commas. The third bit is the actual profile, which obviously has to exist
+for any of this to make sense.
+
+Running your build with these things in your POM, nothing should've changed. It is
+only when you run Maven with the particular activation profile(s) configured for
+maven-build-utils that you should see any difference in build output. When you want 
+maven-build-utils to produce the statistics for the build, invoke the configured
+profile with the _-P_ flag, e.g.:
+
+    mvn test -P perfstats
+
+With the right profile activated while running any kind of goals and phases, your 
+build output should conclude with a summary that looks a bit like this (for a 
+multi-module project):
 
     [INFO] ------------------------- BUILD STEP DURATIONS -------------------------
     [INFO] PROJECT                                                    DURATION     
@@ -81,6 +106,19 @@ The percentages are included for easier overview of where the hotspots are:
   to the project's execution.
 * The listed percentage for a _goal_ represents that goal's contribution
   to the phase's execution.
+
+If you'd like to produce this output by default without passing the specific
+profile on the command line, you can activate the profile by default in your
+POM like so:
+
+    <profiles>
+        <profile>
+	        <id>perfstats</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
 
 # CONFIGURATION
 

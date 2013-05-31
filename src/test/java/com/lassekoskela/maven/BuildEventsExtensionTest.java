@@ -95,6 +95,14 @@ public class BuildEventsExtensionTest {
 	}
 
 	@Test
+	public void logsWhenPropertySet() throws Exception {
+        projectProperties.setProperty(ACTIVATION_PROFILE_KEY, "someOtherProfile");
+        projectProperties.setProperty(ACTIVATION_PROPERTY_KEY, Boolean.TRUE.toString());
+		extension.afterProjectsRead(session);
+		assertThat(log, is(instanceOf(ConsoleLog.class)));
+	}
+
+	@Test
 	public void canBeExplicitlyToldToLogToConsole() throws Exception {
         userProperties.setProperty(OUTPUT_MODE, "console");
 		extension.afterProjectsRead(session);

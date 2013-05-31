@@ -31,6 +31,7 @@ public class BuildEventsExtension extends AbstractMavenLifecycleParticipant {
 	static final String OUTPUT_FILE = "duration.output.file";
 	static final String DEFAULT_FILE_DESTINATION = "target/durations.log";
     static final String ACTIVATION_PROFILE_KEY = "maven-build-utils.activationProfiles";
+    static final String ACTIVATION_PROPERTY_KEY = "maven-build-utils.activate";
     
 	@Requirement
 	Logger logger;
@@ -50,7 +51,10 @@ public class BuildEventsExtension extends AbstractMavenLifecycleParticipant {
     }
 
     private boolean shouldBeActive(MavenSession session) {
-        boolean shouldBeActive = false;
+        boolean shouldBeActive = Boolean.valueOf(getActivationProperty(session));
+        if (shouldBeActive) {
+        	return shouldBeActive;
+        }
 
         List<String> activationProfiles = listActivationProfiles(session);
         for (String currentlyActive : getAllActiveProfileNames(session)) if (activationProfiles.contains(currentlyActive)) shouldBeActive = true;
@@ -63,6 +67,11 @@ public class BuildEventsExtension extends AbstractMavenLifecycleParticipant {
     
     protected static String getActivationProfilesProperty(MavenSession session) {
         return session.getCurrentProject().getProperties().getProperty(ACTIVATION_PROFILE_KEY, "default");
+    }
+
+    
+    private String getActivationProperty(MavenSession session) {
+        return session.getCurrentProject().getProperties().getProperty(ACTIVATION_PROPERTY_KEY, Boolean.FALSE.toString());
     }
 
     protected static boolean isActivationProfilesPropertySet(MavenSession session) {

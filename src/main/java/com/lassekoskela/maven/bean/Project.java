@@ -4,6 +4,9 @@ import java.util.Set;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 
 public class Project extends MavenItem {
 
@@ -18,8 +21,20 @@ public class Project extends MavenItem {
 		return phases;
 	}
 	
-	public void addPhase(Phase phase) {
+	public Phase addPhase(Phase phase) {
 		phases.add(phase);
+		return phase;
+	}
+
+	public Optional<Phase> getPhase(final String phaseName) {
+		return FluentIterable
+				.from(phases)
+				.firstMatch(new Predicate<Phase>() {
+					@Override
+					public boolean apply(Phase input) {
+						return input.getItemId().equals(phaseName);
+					}
+				});
 	}
 
 	@Override

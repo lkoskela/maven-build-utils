@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Your Maven build</title>
+		<style type="text/css">
+			body {
+				border-top: red 2px solid;
+				border-left: red 2px solid;
+				padding: 10px;
+				position: relative;
+				min-height: 600px;
+			}
+			.build-item {
+				position: absolute;
+				width: 50px;
+				font-size: 20px;
+				letter-spacing: 20px;
+				line-height: 100%;
+				text-align: center;
+				word-wrap: break-word;
+				overflow: hidden;
+				-moz-border-radius: 5px;
+				border-radius: 5px;
+				opacity:0.85;
+				background-color: lightGray;
+			}
+			.build-item:hover {
+				box-shadow: 0px 0px 0px 2px black;
+				opacity:1;
+			}
+			.build-item-selected {
+				box-shadow: 0px 0px 0px 1px black;
+				opacity:1;
+			}
+			.build-item-highlight {
+				box-shadow: 0px 0px 0px 1px red;
+				opacity:1;
+			}
+			.build-item-pre-clean {
+				background-color: #CCA300;
+			}
+			.build-item-clean {
+				background-color: #FFCC00;
+			}
+			.build-item-post-clean {
+				background-color: #FFD633;
+			}
+			.build-item-validate {
+				background-color: #3366CC;
+			}
+			.build-item-initialize {
+				background-color: #5C85D6;
+			}
+			.build-item-generate-sources {
+				background-color: #0099CC;
+			}
+			.build-item-process-sources {
+				background-color: #33ADD6
+			}
+			.build-item-generate-resources {
+				background-color: #33CCCC
+			}
+			.build-item-process-resources {
+				background-color: #5CD6D6
+			}
+			.build-item-compile {
+				background-color: #00FFCC
+			}
+			.build-item-process-classes {
+				background-color: #33FFD6
+			}
+			.build-item-generate-test-sources {
+				background-color: #00FF99
+			}
+			.build-item-process-test-sources {
+				background-color: #33FFAD
+			}
+			.build-item-generate-test-resources {
+				background-color: #00B200
+			}
+			.build-item-process-test-resources {
+				background-color: #00E600
+			}
+			.build-item-test-compile {
+				background-color: #33CC33
+			}
+			.build-item-process-test-classes {
+				background-color: #5CD65C
+			}
+			.build-item-test {
+				background-color: #19A319
+			}
+			.build-item-prepare-package {
+				background-color: #4DB84D
+			}
+			.build-item-package {
+				background-color: #47A375
+			}
+			.build-item-pre-integration-test {
+				background-color: #70B894
+			}
+			.build-item-integration-test {
+				background-color: #99CCB2
+			}
+			.build-item-post-integration-test {
+				background-color: #C2E0D1
+			}
+			.build-item-verify {
+				background-color: #AD33AD
+			}
+			.build-item-install {
+				background-color: #C266C2
+			}
+			.build-item-deploy {
+				background-color: #D699D6
+			}
+		</style>
+	</head>
+	<body>
+	
+		<div class="build-item build-item-validate" data-deps="" id="project1-validate-goal0" onclick="buildItemClicked(this)" style="height:8px;top:0px;left:0px;" title="project1 (validate:goal0)">
+			project1</div>
+
+		
+		<div class="build-item build-item-compile" data-deps="" id="project1-compile-goal1" onclick="buildItemClicked(this)" style="height:48px;top:0px;left:60px;" title="project1 (compile:goal1)">
+					project1</div>
+		
+		
+		<div class="build-item build-item-validate" data-deps="project1-validate-goal0" id="project1-validate-goal1" onclick="buildItemClicked(this)" style="height:320px;top:12px;left:0px;" title="project1 (validate:goal1)">
+					project1</div>
+		
+		
+		<div class="build-item build-item-compile" data-deps="project1-validate-goal0 project1-compile-goal1" id="project1-compile-goal2" onclick="buildItemClicked(this)" style="height:400px;top:80px;left:60px;" title="project1 (compile:goal2)">
+					project1</div>
+		
+		
+		<div class="build-item build-item-install" data-deps="" id="project2-install-goal2" onclick="buildItemClicked(this)" style="height:16px;top:112px;left:120px;" title="project2 (install:goal2)">
+					project2</div>
+		
+		
+		<div class="build-item build-item-install" data-deps="project2-install-goal2 project2-test-goal2" id="project2-install-goal1" onclick="buildItemClicked(this)" style="height:48px;top:120px;left:180px;" title="project2 (install:goal1)">
+					project2</div>
+		
+		
+		<div class="build-item build-item-test" data-deps="" id="project2-test-goal1" onclick="buildItemClicked(this)" style="height:8px;top:332px;left:120px;" title="project2 (test:goal1)">
+					project2</div>
+		
+		
+		<div class="build-item build-item-validate" data-deps="project1-validate-goal0 project1-validate-goal1" id="project1-validate-goal2" onclick="buildItemClicked(this)" style="height:160px;top:340px;left:180px;" title="project1 (validate:goal2)">
+					project1</div>
+		
+		
+		<div class="build-item build-item-test" data-deps="project2-test-goal1" id="project2-test-goal2" onclick="buildItemClicked(this)" style="height:32px;top:344px;left:0px;" title="project2 (test:goal2)">
+					project2</div>
+
+		<script type="text/javascript">
+
+			var selectedBuildItem = null;
+			var highlightedBuildItems = [];
+
+			function buildItemClicked(buildItem) {
+				removeHighlights();
+				changeSelectedBuildItem(buildItem);
+				addHighlights(buildItem);
+			}
+
+			function addHighlights(buildItem) {
+				buildItem.dataset.deps.split(" ").forEach(function(dependencyId) {
+					if (dependencyId == "") {
+						return;
+					}
+					var dependencyElement = document.getElementById(dependencyId);
+					highlightedBuildItems.push(dependencyId);
+					dependencyElement.classList.add("build-item-highlight");
+				});
+			}
+
+			function changeSelectedBuildItem(newSelectedBuildItem) {
+				if (selectedBuildItem != null) {
+					selectedBuildItem.classList.remove("build-item-selected");
+				}
+				newSelectedBuildItem.classList.add("build-item-selected");
+				selectedBuildItem = newSelectedBuildItem;
+			}
+
+			function removeHighlights() {
+				highlightedBuildItems.forEach(function(dependencyId) {
+					document.getElementById(dependencyId).classList.remove("build-item-highlight");
+				});
+				highlightedBuildItems = [];
+			}
+		</script>
+	</body>
+</html>

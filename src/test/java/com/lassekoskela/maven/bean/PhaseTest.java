@@ -20,7 +20,7 @@ public class PhaseTest {
 	
 	@Test
 	public void testAddGoal() {
-		phase.addGoal(new Goal("goal", new Duration(1200)));
+		phase.addGoal(new Goal("goal", new Duration(1200), 1000));
 		
 		assertEquals(phase.getGoals().size(), 1);
 	}

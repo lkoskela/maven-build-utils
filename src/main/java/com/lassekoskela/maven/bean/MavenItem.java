@@ -39,7 +39,7 @@ public class MavenItem {
 
 	@Override
 	public String toString() {
-		return toString()
+		return toStringHelper()
 			.toString();
 	}
 	

@@ -1,8 +1,6 @@
 package com.lassekoskela.time;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
-import com.lassekoskela.maven.bean.Phase;
 
 public class Duration {
 	private static final int MILLIS_IN_HOUR = 60 * 60 * 1000;

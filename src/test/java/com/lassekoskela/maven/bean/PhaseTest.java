@@ -15,12 +15,12 @@ public class PhaseTest {
 	
 	@Before
 	public void setup() {
-		phase = new Phase("prj", new Duration(2400), Sets.<Goal> newHashSet());
+		phase = new Phase("prj", Sets.<Goal> newHashSet());
 	}
 	
 	@Test
 	public void testAddGoal() {
-		phase.addGoal(new Goal("goal", new Duration(1200), 1000));
+		phase.addGoal(new Goal("goal", new Duration(2000), 1000));
 		
 		assertEquals(phase.getGoals().size(), 1);
 	}

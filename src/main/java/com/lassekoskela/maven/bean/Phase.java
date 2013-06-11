@@ -4,14 +4,13 @@ import java.util.Set;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
-import com.lassekoskela.time.Duration;
 
 public class Phase extends MavenItem {
 
 	private final Set<Goal> goals;
 	
-	public Phase(String name, Duration duration, Set<Goal> goals) {
-		super(name, duration);
+	public Phase(String name, Set<Goal> goals) {
+		super(name);
 		this.goals = goals;
 	}
 	

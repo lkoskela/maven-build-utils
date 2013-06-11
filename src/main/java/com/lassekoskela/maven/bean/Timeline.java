@@ -1,25 +1,19 @@
 package com.lassekoskela.maven.bean;
 
-import java.util.Set;
-
 import com.google.common.base.Objects;
 
 public class Timeline {
 
-	private final Set<Project> projects;
+	private final Iterable<Project> projects;
 	
-	public Timeline(Set<Project> projects) {
+	public Timeline(Iterable<Project> projects) {
 		this.projects = projects;
 	}
 	
-	public Set<Project> getProjects() {
+	public Iterable<Project> getProjects() {
 		return projects;
 	}
 	
-	public void addProject(Project project) {
-		projects.add(project);
-	}
-
 	@Override
 	public int hashCode(){
 		return Objects.hashCode(projects);

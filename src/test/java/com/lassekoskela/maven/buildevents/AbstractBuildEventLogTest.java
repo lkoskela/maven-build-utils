@@ -53,12 +53,12 @@ public abstract class AbstractBuildEventLogTest {
 		Clock.reset();
 	}
 
-	protected Matcher<Iterable<BuildStep>> hasBuildStep(String phase,
+	protected Matcher<Iterable<? super BuildStep>> hasBuildStep(String phase,
 			String goal) {
 		return hasBuildStep(simulator.project, phase, goal);
 	}
 
-	protected Matcher<Iterable<BuildStep>> hasBuildStep(String project,
+	protected Matcher<Iterable<? super BuildStep>> hasBuildStep(String project,
 			String phase, String goal) {
 		BuildStep step = new BuildStep(project, phase, simulator.groupId,
 				simulator.artifactId, goal);

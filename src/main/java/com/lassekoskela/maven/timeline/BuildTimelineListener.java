@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.maven.execution.AbstractExecutionListener;
 import org.apache.maven.execution.ExecutionEvent;
-import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.logging.Logger;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -70,7 +69,7 @@ public class BuildTimelineListener extends AbstractExecutionListener {
 	@VisibleForTesting void mojoEnded(ExecutionEvent event) {
 		Goal endedGoal = nameToGoalMapping.get(event.getMojoExecution().getGoal());
 		endedGoal.setDuration(new Duration(relativeNowFromBuildStartTime(event) - endedGoal.getStartTimeInMs()));
-		logger.info(String.format("[Timeline] The Goal[%s:%s:%s] started at [%dms] has finished at [%dms], elapsed[%dms]",
+		logger.debug(String.format("[Timeline] The Goal[%s:%s:%s] started at [%dms] has finished at [%dms], elapsed[%dms]",
 				event.getMojoExecution().getArtifactId(),
 				event.getMojoExecution().getLifecyclePhase(), endedGoal.getItemId(), endedGoal.getStartTimeInMs(),
 				endedGoal.getCompletedTimeInMs(), endedGoal.getDuration().inMillis()));
@@ -81,7 +80,7 @@ public class BuildTimelineListener extends AbstractExecutionListener {
 		if (!phase.getGoal(goalName).isPresent()) {
 			goalStarted(event, project, phase, goalName);
 		} else {
-			logger.info(String.format("[Timeline] A Goal seems to be started twice in (%s:%s) %s",
+			logger.debug(String.format("[Timeline] A Goal seems to be started twice in (%s:%s) %s",
 					project.getItemId(), phase.getItemId(), goalName));
 		}
 	}
@@ -92,14 +91,14 @@ public class BuildTimelineListener extends AbstractExecutionListener {
 		phase.addGoal(newGoal);
 		nameToGoalMapping.put(goalName, newGoal);
 
-		logger.info(String.format("[Timeline] Add a new Goal[%s:%s:%s] started at [%dms]",
+		logger.debug(String.format("[Timeline] Add a new Goal[%s:%s:%s] started at [%dms]",
 				project.getItemId(), phase.getItemId(), goalName, buildStartTimeInMs));
 	}
 
 	@VisibleForTesting Phase phaseOfMojo(String phaseName, Project project) {
 		Optional<Phase> phase = project.getPhase(phaseName);
 		if (!phase.isPresent()) {
-			logger.info(String.format("[Timeline] Add a new Phase[%s:%s]", project.getItemId(), phaseName));
+			logger.debug(String.format("[Timeline] Add a new Phase[%s:%s]", project.getItemId(), phaseName));
 			return project.addPhase(new Phase(phaseName, Sets.<Goal>newHashSet()));
 		}
 		return phase.get();
@@ -107,7 +106,7 @@ public class BuildTimelineListener extends AbstractExecutionListener {
 
 	@VisibleForTesting Project projectOfMojo(String projectName) {
 		if (!nameToProjectMapping.containsKey(projectName)) {
-			logger.info("[Timeline] Add a new Project[" + projectName + "]");
+			logger.debug("[Timeline] Add a new Project[" + projectName + "]");
 			nameToProjectMapping.put(projectName, new Project(projectName, Sets.<Phase>newHashSet()));
 		}
 		return nameToProjectMapping.get(projectName);

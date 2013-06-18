@@ -46,12 +46,14 @@ public class GoalOrganizer {
 	}
 
 	private void logGoals(Iterable<SortedGoal> sortedGoalsByStartTime) {
-		String formatColumns = "%-70s%15s%15s%15s";
-		logger.info(String.format(formatColumns, "Goal", "start time", "duration", "end time"));
-		for (SortedGoal sortedGoal : sortedGoalsByStartTime) {
-			Goal goal = sortedGoal.goal;
-			logger.info(String.format(formatColumns, sortedGoal.project.getItemId() + " " + sortedGoal.phase.getItemId() + " " + goal.getItemId(),
-					goal.getStartTimeInMs(), goal.getDuration().toString(), goal.getCompletedTimeInMs()));
+		if (logger.isDebugEnabled()) {
+			String formatColumns = "%-70s%15s%15s%15s";
+			logger.debug(String.format(formatColumns, "Goal", "start time", "duration", "end time"));
+			for (SortedGoal sortedGoal : sortedGoalsByStartTime) {
+				Goal goal = sortedGoal.goal;
+				logger.debug(String.format(formatColumns, sortedGoal.project.getItemId() + " " + sortedGoal.phase.getItemId() + " " + goal.getItemId(),
+						goal.getStartTimeInMs(), goal.getDuration().toString(), goal.getCompletedTimeInMs()));
+			}
 		}
 	}
 

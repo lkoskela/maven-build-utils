@@ -53,6 +53,30 @@
 			</properties>
 		</developer>
 	</developers>
+	<contributors>
+		<contributor>
+			<name>Thomas Hilaire</name>
+			<email>thilaire@linagora.com</email>
+			<url>https://github.com/thomas-hilaire</url>
+			<organization>Linagora</organization>
+			<organizationUrl>http://linagora.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>Europe/Paris</timezone>
+		</contributor>
+		<contributor>
+			<name>Antoine Duprat</name>
+			<email>aduprat@linagora.com</email>
+			<url>https://github.com/aduprat</url>
+			<organization>Linagora</organization>
+			<organizationUrl>http://linagora.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>Europe/Paris</timezone>
+		</contributor>
+	</contributors>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>

@@ -22,7 +22,7 @@ to add to your project's POM:
                 <extension>
                     <groupId>com.github.lkoskela</groupId>
                     <artifactId>maven-build-utils</artifactId>
-                    <version>1.4</version>
+                    <version>1.5-SNAPSHOT</version>
                 </extension>
             </extensions>
         </build>
@@ -34,6 +34,9 @@ to add to your project's POM:
         <profiles>
             <profile>
                 <id>perfstats</id>
+                <properties>
+                	<maven-build-utils.activate-timeline>true</maven-build-utils.activate-timeline>
+                </properties>
             </profile>
         </profiles>
         ...
@@ -120,6 +123,13 @@ POM like so:
         </profile>
     </profiles>
 
+# TIMELINE
+
+If you have activated the timeline build with the propertiy "maven-build-utils.activate-timeline", 
+a html page is generated picturing a view of your build.
+
+    iceweasel timeline.html
+    
 # CONFIGURATION
 
 The report is written to the console by default. If you'd prefer to direct

@@ -1,5 +1,7 @@
 package com.lassekoskela.time;
 
+import com.google.common.base.Objects;
+
 public class Duration {
 	private static final int MILLIS_IN_HOUR = 60 * 60 * 1000;
 	private static final int MILLIS_IN_MINUTE = 60 * 1000;
@@ -16,6 +18,11 @@ public class Duration {
 		calculateTimeUnitsFrom(milliseconds);
 	}
 
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(inMilliseconds);
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (!obj.getClass().equals(getClass())) {

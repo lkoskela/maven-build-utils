@@ -67,7 +67,9 @@ public class Exporter {
 
 	@VisibleForTesting
 	File getExportFile(String filePath) {
-		File exportFile = new File(filePath);
+		File targetDir = new File("target");
+		targetDir.mkdirs();
+		File exportFile = new File(targetDir, filePath);
 		if (exportFile.exists() && !exportFile.delete()) {
 			throw new IllegalStateException("Cannot delete existing export file");
 		}

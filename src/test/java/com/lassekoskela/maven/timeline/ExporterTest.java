@@ -6,8 +6,10 @@ import static com.lassekoskela.maven.timeline.ObjectBuilder.project;
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
 import static org.custommonkey.xmlunit.XMLUnit.buildControlDocument;
 import static org.custommonkey.xmlunit.XMLUnit.buildTestDocument;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -24,13 +26,13 @@ import org.xml.sax.InputSource;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.lassekoskela.maven.bean.Project;
 import com.lassekoskela.maven.bean.Timeline;
 import com.lassekoskela.maven.timeline.GoalOrganizer.DisplayableGoal;
 
 public class ExporterTest {
 
-	private String filePath;
+	private String basename;
+	private File exportFile;
 	private Exporter exporter;
 
 	@Before
@@ -40,8 +42,8 @@ public class ExporterTest {
 
 	@Before
 	public void deletePreviousExportFile() throws Exception {
-		filePath = "timeline.html";
-		File exportFile = new File(filePath);
+		basename = "timeline.html";
+		exportFile = new File("target", basename);
 		if (exportFile.exists() && exportFile.isDirectory()) {
 			for (File innerFile : exportFile.listFiles()) {
 				innerFile.delete();
@@ -51,7 +53,7 @@ public class ExporterTest {
 	}
 
 	@Before
-	public void setUp() throws FileNotFoundException {
+	public void createAnExporter() throws FileNotFoundException {
 		exporter = new Exporter(new ConsoleLogger());
 	}
 
@@ -63,28 +65,25 @@ public class ExporterTest {
 	}
 
 	@Test
+	public void exportFileIsUnderTargetDirectory() {
+		File exportFile = exporter.getExportFile(basename);
+		String targetDirPath = new File("target").getAbsolutePath();
+		assertThat(exportFile.getAbsolutePath(), startsWith(targetDirPath));
+	}
+
+	@Test
 	public void exportFileIsNotCreatedUntilWeMakeAnExport() {
-		File exportFile = exporter.getExportFile(filePath);
+		exporter.getExportFile(basename);
 		assertFalse(exportFile.exists());
 	}
 
 	@Test
 	public void anExistingExportFileIsDeleted() throws IOException {
-		File file = new File(filePath);
-		file.createNewFile();
-		assertTrue(file.exists());
+		exportFile.createNewFile();
+		assertTrue(exportFile.exists());
 
-		File exportFile = exporter.getExportFile(filePath);
+		exporter.getExportFile(basename);
 		assertFalse(exportFile.exists());
-	}
-
-	@Test(expected = TimelineExportException.class)
-	public void shouldThrowExceptionWhenExportFileAlreadyExistsAsNonEmptyDirectory() throws Exception {
-		File directory = new File(filePath);
-		directory.mkdir();
-		new File(directory, "child.txt").createNewFile();
-
-		exporter.export(new Timeline(ImmutableSet.<Project> of()));
 	}
 
 	@Test

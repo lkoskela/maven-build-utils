@@ -128,7 +128,7 @@ POM like so:
 If you have activated the timeline build with the property "maven-build-utils.activate-timeline", 
 an HTML page is generated picturing a view of your build.
 
-    open timeline.html
+    open target/timeline.html
     
 # CONFIGURATION
 

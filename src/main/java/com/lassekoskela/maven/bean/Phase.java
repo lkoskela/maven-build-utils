@@ -1,6 +1,7 @@
 package com.lassekoskela.maven.bean;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
@@ -10,50 +11,46 @@ import com.google.common.collect.FluentIterable;
 
 public class Phase extends MavenItem {
 
-	private final Set<Goal> goals;
-	
-	public Phase(String name, Set<Goal> goals) {
+	private final List<Goal> goals;
+
+	public Phase(String name, List<Goal> goals) {
 		super(name);
-		this.goals = goals;
+		this.goals = new ArrayList<Goal>(goals);
 	}
-	
-	public Set<Goal> getGoals() {
+
+	public List<Goal> getGoals() {
 		return goals;
 	}
-	
+
 	public void addGoal(Goal goal) {
 		goals.add(goal);
 	}
 
 	public Optional<Goal> getGoal(final String goalName) {
-		return FluentIterable
-				.from(goals)
-				.firstMatch(new Predicate<Goal>() {
-					@Override
-					public boolean apply(Goal input) {
-						return input.getItemId().equals(goalName);
-					}
-				});
+		return FluentIterable.from(goals).firstMatch(new Predicate<Goal>() {
+			@Override
+			public boolean apply(Goal input) {
+				return input.getItemId().equals(goalName);
+			}
+		});
 	}
 
 	@Override
-	public int hashCode(){
+	public int hashCode() {
 		return Objects.hashCode(super.hashCode(), goals);
 	}
-	
+
 	@Override
-	public boolean equals(Object object){
+	public boolean equals(Object object) {
 		if (object instanceof Phase) {
 			Phase that = (Phase) object;
-			return super.equals(object)
-				&& Objects.equal(this.goals, that.goals);
+			return super.equals(object) && Objects.equal(this.goals, that.goals);
 		}
 		return false;
 	}
 
 	@Override
 	public ToStringHelper toStringHelper() {
-		return super.toStringHelper()
-			.add("goals", goals);
+		return super.toStringHelper().add("goals", goals);
 	}
 }

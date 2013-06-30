@@ -25,11 +25,11 @@ public class Exporter {
 	private static final String TEMPLATE_TIMELINE = "timeline.mustache";
 	private static final String TEMPLATE_BUILDITEM = "buildItem.mustache";
 	private static final String EXPORT_FILE = "timeline.html";
-	
+
 	private final GoalOrganizer goalOrganizer;
 	private final Mustache timelineMustache;
 	private final Mustache buildItemMustache;
-	
+
 	public Exporter(Logger logger) throws FileNotFoundException {
 		goalOrganizer = new GoalOrganizer(logger);
 		ClassLoader classLoader = BuildTimelineExtension.class.getClassLoader();
@@ -41,7 +41,7 @@ public class Exporter {
 	private Mustache compileTemplate(ClassLoader ccl, MustacheFactory mf, String template) {
 		return mf.compile(new InputStreamReader(ccl.getResourceAsStream(template)), template);
 	}
-	
+
 	public File export(Timeline timeline) throws TimelineExportException {
 		try {
 			return serializeTimelineToFile(serializeBuildItems(timeline));
@@ -65,7 +65,8 @@ public class Exporter {
 		return buildItemsWriter.toString();
 	}
 
-	@VisibleForTesting File getExportFile(String filePath) {
+	@VisibleForTesting
+	File getExportFile(String filePath) {
 		File exportFile = new File(filePath);
 		if (exportFile.exists() && !exportFile.delete()) {
 			throw new IllegalStateException("Cannot delete existing export file");
@@ -73,21 +74,19 @@ public class Exporter {
 		return exportFile;
 	}
 
-	@VisibleForTesting Map<String, String> buildTimelineModel(String serializedBuildItems) {
+	private Map<String, String> buildTimelineModel(String serializedBuildItems) {
 		return ImmutableMap.of("timeline", serializedBuildItems);
 	}
-	
-	@VisibleForTesting Map<String, String> buildItemModel(DisplayableGoal goal) {
-		return ImmutableMap.of(
-				"projectId", goal.getProjectId(),
-				"phaseId", goal.getPhaseId(),
-				"goalId", goal.getGoalId(),
-				"projectDeps", goal.getDependencies(),
-				"cssStyle", cssStyle(goal));
+
+	@VisibleForTesting
+	Map<String, String> buildItemModel(DisplayableGoal goal) {
+		return ImmutableMap.of("projectId", goal.getProjectId(), "phaseId", goal.getPhaseId(), "goalId",
+				goal.getGoalId(), "projectDeps", goal.getDependencies(), "cssStyle", cssStyle(goal));
 	}
 
-	@VisibleForTesting String cssStyle(DisplayableGoal goal) {
-		return String.format("height:%dpx;top:%dpx;left:%dpx;",
-				goal.getHeightPosition(), goal.getTopPosition(), goal.getLeftPosition());
+	@VisibleForTesting
+	String cssStyle(DisplayableGoal goal) {
+		return String.format("height:%dpx;top:%dpx;left:%dpx;", goal.getHeightPosition(), goal.getTopPosition(),
+				goal.getLeftPosition());
 	}
 }

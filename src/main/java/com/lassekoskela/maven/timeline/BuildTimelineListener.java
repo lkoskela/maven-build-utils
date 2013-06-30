@@ -1,6 +1,7 @@
 package com.lassekoskela.maven.timeline;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.maven.execution.AbstractExecutionListener;
@@ -11,7 +12,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.lassekoskela.maven.bean.Goal;
 import com.lassekoskela.maven.bean.Phase;
 import com.lassekoskela.maven.bean.Project;
@@ -24,13 +24,15 @@ public class BuildTimelineListener extends AbstractExecutionListener {
 
 	private final Logger logger;
 	private final DateProvider dateProvider;
-	@VisibleForTesting final Map<String, Project> nameToProjectMapping;
-	@VisibleForTesting final Map<String, Goal> nameToGoalMapping;
-	
+	@VisibleForTesting
+	final Map<String, Project> nameToProjectMapping;
+	@VisibleForTesting
+	final Map<String, Goal> nameToGoalMapping;
+
 	public BuildTimelineListener(Logger logger) {
 		this(logger, new DateProviderImpl());
 	}
-	
+
 	public BuildTimelineListener(Logger logger, DateProvider dateProvider) {
 		this.logger = logger;
 		this.dateProvider = dateProvider;
@@ -55,7 +57,7 @@ public class BuildTimelineListener extends AbstractExecutionListener {
 		Phase phase = phaseOfMojo(event.getMojoExecution().getLifecyclePhase(), project);
 		mojoStarted(event, project, phase);
 	}
-	
+
 	@Override
 	public void mojoSucceeded(ExecutionEvent event) {
 		mojoEnded(event);
@@ -66,16 +68,19 @@ public class BuildTimelineListener extends AbstractExecutionListener {
 		mojoEnded(event);
 	}
 
-	@VisibleForTesting void mojoEnded(ExecutionEvent event) {
+	@VisibleForTesting
+	void mojoEnded(ExecutionEvent event) {
 		Goal endedGoal = nameToGoalMapping.get(event.getMojoExecution().getGoal());
 		endedGoal.setDuration(new Duration(relativeNowFromBuildStartTime(event) - endedGoal.getStartTimeInMs()));
-		logger.debug(String.format("[Timeline] The Goal[%s:%s:%s] started at [%dms] has finished at [%dms], elapsed[%dms]",
-				event.getMojoExecution().getArtifactId(),
-				event.getMojoExecution().getLifecyclePhase(), endedGoal.getItemId(), endedGoal.getStartTimeInMs(),
-				endedGoal.getCompletedTimeInMs(), endedGoal.getDuration().inMillis()));
+		logger.debug(String.format(
+				"[Timeline] The Goal[%s:%s:%s] started at [%dms] has finished at [%dms], elapsed[%dms]", event
+						.getMojoExecution().getArtifactId(), event.getMojoExecution().getLifecyclePhase(), endedGoal
+						.getItemId(), endedGoal.getStartTimeInMs(), endedGoal.getCompletedTimeInMs(), endedGoal
+						.getDuration().inMillis()));
 	}
 
-	@VisibleForTesting void mojoStarted(ExecutionEvent event, Project project, Phase phase) {
+	@VisibleForTesting
+	void mojoStarted(ExecutionEvent event, Project project, Phase phase) {
 		String goalName = event.getMojoExecution().getGoal();
 		if (!phase.getGoal(goalName).isPresent()) {
 			goalStarted(event, project, phase, goalName);
@@ -85,39 +90,42 @@ public class BuildTimelineListener extends AbstractExecutionListener {
 		}
 	}
 
-	@VisibleForTesting void goalStarted(ExecutionEvent event, Project project, Phase phase, String goalName) {
+	@VisibleForTesting
+	void goalStarted(ExecutionEvent event, Project project, Phase phase, String goalName) {
 		long buildStartTimeInMs = relativeNowFromBuildStartTime(event);
-		Goal newGoal = new Goal(goalName, new Duration(0), buildStartTimeInMs, Sets.<String>newHashSet());
+		Goal newGoal = new Goal(goalName, new Duration(0), buildStartTimeInMs, new ArrayList<String>());
 		phase.addGoal(newGoal);
 		nameToGoalMapping.put(goalName, newGoal);
 
-		logger.debug(String.format("[Timeline] Add a new Goal[%s:%s:%s] started at [%dms]",
-				project.getItemId(), phase.getItemId(), goalName, buildStartTimeInMs));
+		logger.debug(String.format("[Timeline] Add a new Goal[%s:%s:%s] started at [%dms]", project.getItemId(),
+				phase.getItemId(), goalName, buildStartTimeInMs));
 	}
 
-	@VisibleForTesting Phase phaseOfMojo(String phaseName, Project project) {
+	@VisibleForTesting
+	Phase phaseOfMojo(String phaseName, Project project) {
 		Optional<Phase> phase = project.getPhase(phaseName);
 		if (!phase.isPresent()) {
 			logger.debug(String.format("[Timeline] Add a new Phase[%s:%s]", project.getItemId(), phaseName));
-			return project.addPhase(new Phase(phaseName, Sets.<Goal>newHashSet()));
+			return project.addPhase(new Phase(phaseName, new ArrayList<Goal>()));
 		}
 		return phase.get();
 	}
 
-	@VisibleForTesting Project projectOfMojo(String projectName) {
+	@VisibleForTesting
+	Project projectOfMojo(String projectName) {
 		if (!nameToProjectMapping.containsKey(projectName)) {
 			logger.debug("[Timeline] Add a new Project[" + projectName + "]");
-			nameToProjectMapping.put(projectName, new Project(projectName, Sets.<Phase>newHashSet()));
+			nameToProjectMapping.put(projectName, new Project(projectName, new ArrayList<Phase>()));
 		}
 		return nameToProjectMapping.get(projectName);
 	}
 
-	@VisibleForTesting long relativeNowFromBuildStartTime(ExecutionEvent event) {
+	@VisibleForTesting
+	long relativeNowFromBuildStartTime(ExecutionEvent event) {
 		long elapsedTime = dateProvider.now().getTime() - event.getSession().getStartTime().getTime();
 		if (elapsedTime < 0) {
 			throw new TimelineExportException("Relative time is negative");
 		}
 		return elapsedTime;
 	}
-
 }

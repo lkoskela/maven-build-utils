@@ -125,10 +125,10 @@ POM like so:
 
 # TIMELINE
 
-If you have activated the timeline build with the propertiy "maven-build-utils.activate-timeline", 
-a html page is generated picturing a view of your build.
+If you have activated the timeline build with the property "maven-build-utils.activate-timeline", 
+an HTML page is generated picturing a view of your build.
 
-    iceweasel timeline.html
+    open timeline.html
     
 # CONFIGURATION
 
